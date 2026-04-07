@@ -1,0 +1,23 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.pytest_cache/
+
+# Local tool metadata
+.codex/
+
+# Large raw data
+*.csv
+*.csv.gz
+*.parquet
+*.feather
+data/
+
+# Jupyter / temp
+.ipynb_checkpoints/
+
+# OS / editor
+.DS_Store
+Thumbs.db
