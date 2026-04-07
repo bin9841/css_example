@@ -38,7 +38,7 @@ FINAL_BAD_RULES: tuple[BadRule, ...] = (
     BadRule(
         "default_event",
         "internal_or_external",
-        "default / charge-off / CB default registration",
+        "default / charge-off / external bureau default registration",
         "bad",
         "earliest qualifying default-type event defines borrower bad",
     ),
@@ -66,7 +66,7 @@ def build_indeterminate_definition_table() -> pd.DataFrame:
             },
             {
                 "classification": "bad",
-                "condition": ">= 60 DPD or default / charge-off / CB default registration",
+                "condition": ">= 60 DPD or default / charge-off / external bureau default registration",
                 "recommended_treatment": "keep as bad",
             },
         ]

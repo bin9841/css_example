@@ -114,7 +114,7 @@ def _configure_document(document: Document) -> None:
 def _add_title(document: Document) -> None:
     title = document.add_paragraph()
     title.alignment = WD_ALIGN_PARAGRAPH.CENTER
-    run = title.add_run("Retail Behavior Scorecard Process Wiki")
+    run = title.add_run("Retail Credit Scorecard Process Wiki")
     run.bold = True
     run.font.size = Pt(18)
 
@@ -214,7 +214,7 @@ def _add_time_bad_section(document: Document, design: dict[str, object]) -> None
     for item in [
         "internal delinquency >= 60 DPD",
         "external delinquency >= 60 DPD",
-        "default, charge-off, or CB default registration",
+        "default, charge-off, or external bureau default registration",
         "borrower-level recognition across all eligible facilities",
         "optional indeterminate bucket for 10 to 59 DPD",
     ]:

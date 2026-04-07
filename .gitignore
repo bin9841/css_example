@@ -14,6 +14,9 @@ __pycache__/
 *.parquet
 *.feather
 data/
+reports/*.xlsx
+reports/*.docx
+reports/word_assets/
 
 # Jupyter / temp
 .ipynb_checkpoints/

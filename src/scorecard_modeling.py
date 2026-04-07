@@ -65,7 +65,7 @@ COEFFICIENT_INTERPRETATION: tuple[dict[str, str], ...] = (
     {"feature_name": "deposit_liquidity_share_3m", "interpretation": "higher liquid deposit support should reduce future bad risk"},
     {"feature_name": "salary_transfer_freq_12m", "interpretation": "more regular salary inflow should indicate repayment stability"},
     {"feature_name": "cb_purchase_util_avg_3m", "interpretation": "higher recent purchase utilization indicates stronger repayment pressure"},
-    {"feature_name": "ext_cb_default_flag", "interpretation": "external default or severe bureau delinquency should materially increase risk"},
+    {"feature_name": "ext_cb_default_flag", "interpretation": "external bureau default or severe bureau delinquency should materially increase risk"},
     {"feature_name": "acct_tenure_months", "interpretation": "longer relationship tenure should generally reduce risk"},
 )
 

@@ -6,6 +6,12 @@ from typing import Callable
 import numpy as np
 import pandas as pd
 
+from src.public_aliases import (
+    ALIAS_EXTERNAL_BUREAU_DEFAULT_FLAG_12M,
+    ALIAS_EXTERNAL_BUREAU_SEVERE_DQ_60PLUS_FLAG_12M,
+    apply_public_column_aliases,
+)
+
 
 @dataclass(frozen=True)
 class FeatureSpec:
@@ -214,9 +220,9 @@ FEATURE_SPECS: tuple[FeatureSpec, ...] = (
         "ext_cb_default_flag",
         "external_delinquency",
         "severity",
-        "CB채무불이행등재여부_12M, NICE단기연체60일이상발생여부_12M",
-        "max(CB채무불이행등재여부_12M, NICE단기연체60일이상발생여부_12M)",
-        "외부 부도/장기연체 플래그",
+        "external_bureau_default_flag_12m, external_bureau_severe_dq_60plus_flag_12m",
+        "max(external_bureau_default_flag_12m, external_bureau_severe_dq_60plus_flag_12m)",
+        "외부 bureau 부도/장기연체 플래그",
     ),
     FeatureSpec(
         "loan_exposure_total_cnt",
@@ -326,6 +332,7 @@ def build_feature_formulas() -> pd.DataFrame:
 
 def generate_candidate_features(base_df: pd.DataFrame) -> pd.DataFrame:
     """Generate candidate features from raw variables only."""
+    base_df = apply_public_column_aliases(base_df)
     feature_df = base_df[["고객번호", "기준년월"]].copy()
 
     int_dq_days_12m = _cols(base_df, "연체일수_M", 12)
@@ -380,7 +387,7 @@ def generate_candidate_features(base_df: pd.DataFrame) -> pd.DataFrame:
     feature_df["ext_dq_freq_12m"] = base_df["외부연체총건수_12M"]
     feature_df["ext_dq_recency_3m_flag"] = (base_df["외부연체총건수_3M"] > 0).astype(int)
     feature_df["ext_cb_default_flag"] = base_df[
-        ["CB채무불이행등재여부_12M", "NICE단기연체60일이상발생여부_12M"]
+        [ALIAS_EXTERNAL_BUREAU_DEFAULT_FLAG_12M, ALIAS_EXTERNAL_BUREAU_SEVERE_DQ_60PLUS_FLAG_12M]
     ].max(axis=1)
 
     feature_df["loan_exposure_total_cnt"] = base_df["타사대출건수_현재"] + base_df["미상환대출총건수_현재"]

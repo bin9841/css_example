@@ -1,8 +1,8 @@
-# Retail Behavior Scorecard Code Wiki
+# Retail Credit Scorecard Code Wiki
 
 ## 1. Overview
 
-This repository now contains a Python-first scorecard development pipeline for the retail behavior scorecard redevelopment project.
+This repository contains a Python-first scorecard development pipeline for a retail credit behavior scorecard template.
 
 The implemented code follows the project framework:
 
@@ -148,7 +148,7 @@ Policy-level final bad definition:
 
 - internal delinquency `>= 60 DPD`
 - external delinquency `>= 60 DPD`
-- default / charge-off / CB default registration
+- default / charge-off / external bureau default registration
 
 Current executable fallback:
 
@@ -167,7 +167,7 @@ Feature families include:
 - internal delinquency
 - deposit performance
 - salary transfer
-- CB card usage
+- external bureau card usage
 - external delinquency
 - loan exposure
 - account opening history

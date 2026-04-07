@@ -4,6 +4,12 @@ from dataclasses import asdict, dataclass
 
 import pandas as pd
 
+from src.public_aliases import (
+    ALIAS_EXTERNAL_BUREAU_DEFAULT_FLAG_12M,
+    ALIAS_EXTERNAL_BUREAU_SEVERE_DQ_60PLUS_FLAG_12M,
+    apply_public_column_aliases,
+)
+
 
 @dataclass(frozen=True)
 class LabelingRequirement:
@@ -22,7 +28,7 @@ LABELING_REQUIREMENTS: tuple[LabelingRequirement, ...] = (
     ),
     LabelingRequirement(
         "event_types",
-        "Need >=60 DPD, default, charge-off, and CB default registration events.",
+        "Need >=60 DPD, default, charge-off, and external bureau default registration events.",
     ),
     LabelingRequirement(
         "optional_indeterminate",
@@ -74,8 +80,9 @@ def build_proxy_label_table_from_snapshot(base_df: pd.DataFrame) -> pd.DataFrame
     col_curr_dq = "현재연체여부"
     col_internal_max_dpd = "내부카드최장연체일수_12M"
     col_external_max_dpd = "외부최장연체일수_12M"
-    col_cb_default = "CB채무불이행등재여부_12M"
-    col_nice_60 = "NICE단기연체60일이상발생여부_12M"
+    base_df = apply_public_column_aliases(base_df)
+    col_external_bureau_default = ALIAS_EXTERNAL_BUREAU_DEFAULT_FLAG_12M
+    col_external_bureau_severe_dq = ALIAS_EXTERNAL_BUREAU_SEVERE_DQ_60PLUS_FLAG_12M
 
     required_cols = [
         col_customer,
@@ -83,8 +90,8 @@ def build_proxy_label_table_from_snapshot(base_df: pd.DataFrame) -> pd.DataFrame
         col_curr_dq,
         col_internal_max_dpd,
         col_external_max_dpd,
-        col_cb_default,
-        col_nice_60,
+        col_external_bureau_default,
+        col_external_bureau_severe_dq,
     ]
     missing_cols = [col for col in required_cols if col not in base_df.columns]
     if missing_cols:
@@ -93,7 +100,7 @@ def build_proxy_label_table_from_snapshot(base_df: pd.DataFrame) -> pd.DataFrame
     label_df = base_df[[col_customer, col_ref_month]].copy()
     internal_bad = base_df[col_internal_max_dpd].fillna(0) >= 60
     external_bad = base_df[col_external_max_dpd].fillna(0) >= 60
-    bureau_default = base_df[[col_cb_default, col_nice_60]].fillna(0).max(axis=1) > 0
+    bureau_default = base_df[[col_external_bureau_default, col_external_bureau_severe_dq]].fillna(0).max(axis=1) > 0
     current_bad = base_df[col_curr_dq].fillna(0) > 0
 
     label_df["bad_flag"] = (

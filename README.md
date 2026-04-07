@@ -1,31 +1,33 @@
-# Credit Scoring Codex Starter Pack
+# Retail Credit Scorecard Template
 
-This package provides a Codex-ready starter structure for retail credit scoring model development using Python.
+This repository is a Python-first template for retail credit scorecard development. It is designed as a reusable example project for:
 
-## Included
-- `AGENTS.md`: project-wide instructions
-- `.codex/agents/`: role-specific subagents
-- `skills/`: reusable workflows for common credit-model tasks
+- development population design
+- time-structure definition
+- bad-definition policy design
+- raw-data-first feature engineering
+- scorecard-oriented variable screening
+- WoE plus logistic regression modeling
+- validation reporting and documentation
 
-## Recommended agents
-- `planner`: converts business requests into execution-ready work items
-- `data_engineer`: designs datasets and temporal joins
-- `feature_engineer`: defines leakage-safe risk features
-- `modeler`: builds baseline scorecard or interpretable models
-- `validator`: reviews performance, stability, and documentation
-- `documentation_writer`: turns technical work into audit-ready documentation
+## Repository Structure
+- `AGENTS.md`: repository-level working rules
+- `src/`: reusable Python modules for scorecard development
+- `skills/`: task-specific instructions for population, features, modeling, and validation
+- `docs/`: process and code wiki style documentation
+- `reports/`: generated reporting outputs for local review
 
-## Recommended skills
-- `dataset-design`
-- `delinquency-features`
-- `deposit-features`
-- `cb-features`
-- `target-definition`
-- `scorecard-modeling`
-- `model-validation`
-- `python-risk-template`
+## Included Workflow Areas
+- population definition and exclusion waterfall
+- observation and performance window design
+- borrower-level bad-definition framework
+- raw-to-feature lineage tracking
+- candidate variable generation
+- IV and correlation-based screening
+- scorecard case analysis
+- validation metrics and governance summaries
 
 ## Notes
-- All templates are written in English, as requested.
-- The content is optimized for a Python-first workflow.
-- You can extend the pack with repo-specific rules, feature specs, or model-governance requirements.
+- The repository is structured as a reusable template and learning example.
+- Any generated reports should be reviewed before external sharing.
+- Public-safe usage is easier when client-specific names, vendor-specific references, and generated business reports are excluded from version control.

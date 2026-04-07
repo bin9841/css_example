@@ -4,6 +4,15 @@ from dataclasses import dataclass
 
 import pandas as pd
 
+from src.public_aliases import (
+    PUBLIC_COLUMN_ALIASES,
+    RAW_EXTERNAL_BUREAU_DEFAULT_FLAG_12M,
+    RAW_EXTERNAL_BUREAU_DEFAULT_RECENT_DATE,
+    RAW_EXTERNAL_BUREAU_SEVERE_DQ_60PLUS_FLAG_12M,
+    RAW_EXTERNAL_BUREAU_USAGE_MONTHS_12M,
+    build_public_column_alias_table,
+)
+
 
 KEY_COLUMNS: tuple[str, ...] = ("고객번호", "기준년월")
 
@@ -253,7 +262,7 @@ CARD_USAGE_COLUMNS: tuple[str, ...] = (
 ACCOUNT_OPENING_COLUMNS: tuple[str, ...] = (
     "거래개시일",
     "가입경과개월수",
-    "CB이용개월수_12M",
+    RAW_EXTERNAL_BUREAU_USAGE_MONTHS_12M,
     "카드보유개월수",
     "최초신용개설일",
     "최초카드개설일",
@@ -274,9 +283,9 @@ EXTERNAL_DELINQUENCY_COLUMNS: tuple[str, ...] = (
     "외부최장연체일수_6M",
     "외부최장연체일수_12M",
     "대부업권외부연체건수_12M",
-    "NICE단기연체60일이상발생여부_12M",
-    "CB채무불이행등재여부_12M",
-    "CB채무불이행최근발생일",
+    RAW_EXTERNAL_BUREAU_SEVERE_DQ_60PLUS_FLAG_12M,
+    RAW_EXTERNAL_BUREAU_DEFAULT_FLAG_12M,
+    RAW_EXTERNAL_BUREAU_DEFAULT_RECENT_DATE,
     "외부연체대부업권포함여부_12M",
 )
 
@@ -353,8 +362,8 @@ RAW_TO_FEATURE_MAPPING: tuple[dict[str, str], ...] = (
     },
     {
         "feature_family": "external_delinquency_risk",
-        "raw_columns": "외부연체건수_12M, 외부최장연체일수_12M, NICE단기연체60일이상발생여부_12M, CB채무불이행등재여부_12M",
-        "example_features": "external_delinquency_count_12m, max_external_dpd_12m, cb_default_flag",
+        "raw_columns": "외부연체건수_12M, 외부최장연체일수_12M, external_bureau_severe_dq_60plus_flag_12m, external_bureau_default_flag_12m",
+        "example_features": "external_delinquency_count_12m, max_external_dpd_12m, external_bureau_default_flag",
         "leakage_control": "use only delinquency history observable at reference month; do not inject future performance events",
     },
 )
@@ -412,12 +421,18 @@ def build_base_table_schema() -> pd.DataFrame:
             records.append(
                 {
                     "column_name": column_name,
+                    "public_alias_name": PUBLIC_COLUMN_ALIASES.get(column_name, ""),
                     "column_group": group.group_name,
                     "description": group.description,
                     "key_flag": "Y" if column_name in KEY_COLUMNS else "N",
                 }
             )
     return pd.DataFrame(records)
+
+
+def build_public_alias_schema() -> pd.DataFrame:
+    """Return vendor-neutral aliases for public-safe raw column documentation."""
+    return build_public_column_alias_table()
 
 
 def build_column_groups() -> pd.DataFrame:
