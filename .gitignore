@@ -17,6 +17,7 @@ data/
 
 # Jupyter / temp
 .ipynb_checkpoints/
+artifacts/mplconfig/
 
 # OS / editor
 .DS_Store
